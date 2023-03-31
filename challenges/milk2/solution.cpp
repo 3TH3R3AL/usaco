@@ -19,6 +19,9 @@ void printInterval(interval* root){
   }
 }
 void freeInterval (struct interval *root){
+  if(root == 0){
+    return;
+  }
   freeInterval(root->next);
   free(root);
 };
@@ -45,7 +48,7 @@ struct interval *findPrevious(struct interval *root, struct interval *head){
     return 0;   
   }
   while(true){    
-    if(root->next = head){
+    if(root->next == head){
       return root;
     }
      root = root->next; 
@@ -129,7 +132,7 @@ int main()
       new_i->high = high;
       new_i->next = head;
     }  
-    ;
+    
   }
   printInterval(root);
   int maxCont = 0;

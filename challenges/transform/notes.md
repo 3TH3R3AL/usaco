@@ -1,4 +1,4 @@
-# USACO - Task "%CHNAME%"
+# USACO - Task "transform"
 
 ## Challenge
 
