@@ -5,9 +5,10 @@ LANG: C++
 */
 #include <fstream>
 #include <iostream>
-#include <cstring>
+#include <algorithm>
 #include <vector>
 using namespace std;
+
 #define MAX_FEED 15
 #define MAX_VITAMIN 25
 int V, G, FEEDS[MAX_FEED][MAX_VITAMIN], REQS[MAX_VITAMIN], ANS[MAX_FEED];
@@ -24,17 +25,30 @@ bool check_reqs(int reqs[MAX_VITAMIN])
   return true;
 }
 
-int breadth_first_scan(int depth, int prev[MAX_FEED], int length, int nreqs[MAX_VITAMIN])
+int breadth_first_scan(int depth, int prev[MAX_FEED], int length, int nreqs[MAX_VITAMIN],int is)
 {
+  /*
   vector<int> possible;
   for(int i = 0; i < G;i++){
     if(prev[i] == 0 && i >= length)
       possible.push_back(i);
   }
   int l = possible.size();
-  for (int i = 0; i < l; i++)
+  cout << "[";
+  for (int j = 0; j < MAX_FEED; j++)
   {
-    int to_add = possible[i];
+    if(prev[j] == 1){
+      cout << j << ",";
+    }
+  }
+  cout << "]\n";*/
+
+  for (int i = is; i < G; i++)
+  {
+    if(prev[i] == 1){
+      continue;
+    }
+    int to_add = i;
 
     int nnreqs[MAX_VITAMIN];
     for (int j = 0; j < V; j++)
@@ -42,20 +56,20 @@ int breadth_first_scan(int depth, int prev[MAX_FEED], int length, int nreqs[MAX_
       nnreqs[j] = nreqs[j] - FEEDS[to_add][j];
     }
     //cout << depth << " : " << i << "\n";
-
     if (depth == 1)
     {
       if (!check_reqs(nnreqs))
         continue;
-      memcpy(ANS,prev,MAX_FEED*sizeof(int));
+      copy(prev,prev+MAX_FEED,ANS);
       ANS[to_add] = 1;
       return 1;
     }
-
     int nprev[MAX_FEED];
-    memcpy(nprev,prev,MAX_FEED*sizeof(int));
+    copy(prev,prev+MAX_FEED,nprev);
     nprev[to_add] = 1;
-    if(breadth_first_scan(depth-1,nprev,length+1,nnreqs)){
+    
+    
+    if(breadth_first_scan(depth-1,nprev,length+1,nnreqs,i)){
       return 1;
     }
 
@@ -65,7 +79,7 @@ int breadth_first_scan(int depth, int prev[MAX_FEED], int length, int nreqs[MAX_
 
 int main()
 {
-  cout << "start\n";
+
   ofstream fout("holstein.out");
   ifstream fin("holstein.in");
   fin >> V;
@@ -82,25 +96,25 @@ int main()
       fin >> FEEDS[i][j];
     }
   }
-  cout << "1\n";
   int depth = 1;
-  int st[MAX_FEED] = {0};
-  /*
-  while (!breadth_first_scan(depth, st, 0, REQS))
+  int st[MAX_FEED] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+  //breadth_first_scan(depth, st, 0, REQS,0);
+  while (!breadth_first_scan(depth, st, 0, REQS,0))
   {
-    //cout << depth << " - depth\n";
+    if(depth > MAX_FEED){
+      cerr << "ERROR: NO SOLUTION FOUND within 3\n";
+      return 1;
+    }
     depth++;
   }
-  cout << "2\n";
-
   fout << depth;
-  for (int i = 0; i < MAX_VITAMIN; i++)
+  for (int i = 0; i < MAX_FEED; i++)
   {
     if(ANS[i] == 1){
       fout << " " << i+1;
 
     }
-  }*/
+  }
   fout << "\n";
 
   return 0;
