@@ -1,4 +1,4 @@
-## NV Chad notes
+j# NV Chad notes
 - Toggle FE = Ctrl N
 - a to create new file while in nvtree
 - Enter to open file while in nvtree
@@ -63,4 +63,5 @@ x ^ (x-1)   00000111        create mask for lowest-set-bit & bits to its right
 ~x & (x-1)  00000011        create mask for bits to right of lowest bit set
 x | (x+1)   00101101        toggle lowest zero bit
 x / (x&-x)  00001011        shift number right so lowest set bit is at bit 0
+
 
